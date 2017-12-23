@@ -12,7 +12,7 @@ object Libuast {
 
   class UastIterator(node: Node, treeOrder: Int) extends Iterator[Node] {
     private var closed = false
-    private var iterPtr = newIterator(node, treeOrder)
+    private var iterPtr: Long = newIterator(node, treeOrder)
 
     def getXXXIter(): Long = {
       iterPtr

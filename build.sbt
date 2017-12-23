@@ -123,7 +123,7 @@ def compileLinux(sourceFiles: String) = {
   }
   val xml2Conf = "xml2-config --cflags --libs" !!
 
-  val cmd:String = "gcc -shared -Wall -fPIC -O2 -std=gnu99 " +
+  val cmd:String = "gcc -shared -Wall -fPIC -O2 " +
     "-I/usr/include " +
     "-I" + javaHome + "/include/ " +
     "-I" + javaHome + "/include/linux " +

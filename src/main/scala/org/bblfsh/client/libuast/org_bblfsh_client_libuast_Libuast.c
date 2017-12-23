@@ -1,7 +1,3 @@
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "org_bblfsh_client_libuast_Libuast.h"
 #include "jni_utils.h"
 #include "nodeiface.h"
@@ -21,10 +17,10 @@ extern NodeIface iface;
 JNIEXPORT jlong JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_newIterator
   (JNIEnv *env, jobject self, jobject obj, int treeOrder) {
 
-    jobject *node = &obj;
-
-    UastIterator *iter = UastIteratorNew(ctx, (void *)node, (TreeOrder)treeOrder);
-    printf("XXX scala_c, iter: %p\n", iter);
+    /*void *node = (void *)&obj;*/
+    void *node = ToObjectPtr(&obj);
+    UastIterator *iter = UastIteratorNew(ctx, node, (TreeOrder)treeOrder);
+    printf("XXX scala_c, iter: %ld\n", iter);
     if (!iter) {
       ThrowException(LastError());
       return 0;
@@ -37,14 +33,17 @@ JNIEXPORT jobject JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterat
   (JNIEnv *env, jobject self, jlong iteratorPtr) {
 
     UastIterator *iter = (UastIterator*) iteratorPtr;
-    printf("XXX CRASH HERE, iter: %p\n", iter);
-    void *node = UastIteratorNext(iter);
-    if (!node) {
-      ThrowException("Could not get next Node in interation");
-      return NULL;
-    }
+    printf("XXX JNI::next CRASH HERE, iter: %ld\n", iter);
+    return *((jobject *)UastIteratorNext(iter));
+    /*jobject *node = (jobject *)UastIteratorNext(iter);*/
+    /*if (!node) {*/
+      /*printf("XXX K1\n");*/
+      /*ThrowException("Could not get next Node in interation");*/
+      /*return NULL;*/
+    /*}*/
 
-    return (jobject)node;
+    /*printf("XXX K2, need to copy the C node to a Java object\n");*/
+    /*return node;*/
 }
 
 JNIEXPORT void JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_disposeIterator
@@ -58,6 +57,7 @@ JNIEXPORT void JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_
     }
 
     UastIteratorFree(iter);
+    freeObjects();
 }
 
 JNIEXPORT jobject JNICALL Java_org_bblfsh_client_libuast_Libuast_filter
@@ -117,6 +117,3 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
   ctx = CreateUast();
   return JNI_VERSION_1_8;
 }
-#ifdef __cplusplus
-}
-#endif
