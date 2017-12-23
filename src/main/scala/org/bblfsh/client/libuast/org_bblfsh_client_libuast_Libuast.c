@@ -6,6 +6,7 @@ extern "C" {
 #include "jni_utils.h"
 #include "nodeiface.h"
 #include "objtrack.h"
+#include "stdio.h" // XXX
 
 #include "uast.h"
 
@@ -15,6 +16,49 @@ static Uast *ctx;
 extern NodeIface iface;
 
 //// Exported Java functions ////
+
+// 00024 = "$" in .class files == Inner class reference
+JNIEXPORT jlong JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_newIterator
+  (JNIEnv *env, jobject self, jobject obj, int treeOrder) {
+
+    jobject *node = &obj;
+
+    UastIterator *iter = UastIteratorNew(ctx, (void *)node, (TreeOrder)treeOrder);
+    printf("XXX scala_c, iter: %p\n", iter);
+    if (!iter) {
+      ThrowException(LastError());
+      return 0;
+    }
+
+    return (jlong) iter;
+}
+
+JNIEXPORT jobject JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_nextIterator
+  (JNIEnv *env, jobject self, jlong iteratorPtr) {
+
+    UastIterator *iter = (UastIterator*) iteratorPtr;
+    printf("XXX CRASH HERE, iter: %p\n", iter);
+    void *node = UastIteratorNext(iter);
+    if (!node) {
+      ThrowException("Could not get next Node in interation");
+      return NULL;
+    }
+
+    return (jobject)node;
+}
+
+JNIEXPORT void JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_disposeIterator
+  (JNIEnv *env, jobject self, jlong iteratorPtr) {
+
+    UastIterator *iter = (UastIterator*) iteratorPtr;
+    if (!iter) {
+      // leak, but nothing we can do about it
+      ThrowException("Could not recover native iterator from UastIterator");
+      return;
+    }
+
+    UastIteratorFree(iter);
+}
 
 JNIEXPORT jobject JNICALL Java_org_bblfsh_client_libuast_Libuast_filter
   (JNIEnv *env, jobject self, jobject obj, jstring query) {
