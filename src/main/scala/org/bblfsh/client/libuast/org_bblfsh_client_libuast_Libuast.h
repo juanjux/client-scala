@@ -16,6 +16,9 @@ extern "C" {
 JNIEXPORT jobject JNICALL Java_org_bblfsh_client_libuast_Libuast_filter
   (JNIEnv *, jobject, jobject, jstring);
 
+JNIEXPORT jobject JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_iterate
+  (JNIEnv *env, jobject self, jobject obj, int treeOrder, int iterations);
+
 JNIEXPORT jobject JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_newIterator
   (JNIEnv *, jobject, jobject, int);
 
