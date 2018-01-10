@@ -4,6 +4,7 @@ import gopkg.in.bblfsh.sdk.v1.uast.generated.Node
 import scala.collection.Iterator
 import java.io.File
 import java.nio.file.Paths
+import java.nio.ByteBuffer
 
 import org.apache.commons.io.{IOUtils, FileUtils}
 
@@ -12,19 +13,14 @@ object Libuast {
 
   class UastIterator(node: Node, treeOrder: Int) extends Iterator[Node] {
     private var closed = false
-    private var iterPtr: Long = newIterator(node, treeOrder)
-
-    def getXXXIter(): Long = {
-      iterPtr
-    }
+    private var rootNode = node
+    private var iterPtr: ByteBuffer = newIterator(rootNode, treeOrder)
 
     override def hasNext(): Boolean = {
-      !closed && iterPtr.longValue != 0
+      !closed
     }
 
     override def next(): Node = {
-      println("XXX iterPtr on next: ")
-      println(iterPtr)
       nextIterator(iterPtr)
     }
 
@@ -35,9 +31,9 @@ object Libuast {
       }
     }
 
-    @native def newIterator(node: Node, treeOrder: Int): Long
-    @native def nextIterator(ptr: Long): Node
-    @native def disposeIterator(ptr: Long)
+    @native def newIterator(node: Node, treeOrder: Int): ByteBuffer
+    @native def nextIterator(ptr: ByteBuffer): Node
+    @native def disposeIterator(ptr: ByteBuffer)
   }
 
   // Extract the native module from the jar

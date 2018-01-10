@@ -144,14 +144,15 @@ class BblfshClientParseTest extends FunSuite with BeforeAndAfter {
 
   test("PreOrder iterator") {
     println("--------------------------------------------------------------")
-    // XXX also form client
+    // XXX also from client
     val order = 0
     var it = BblfshClient.iterator(rootNode, order)
-    println(it.getXXXIter)
 
-    println("XXX CRASH HERE")
-    val nextNode = it.next()
-    //println(nextNode)
+    var n = it.next()
+    assert(n.internalType == "CompilationUnit")
+    assert(it.hasNext())
+    var j = it.next()
+    println(j)
     // XXX iterate
   }
   
