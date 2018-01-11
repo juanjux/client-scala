@@ -103,7 +103,7 @@ compileLibuast := {
 
     "mkdir ./lib" !
 
-    val sourceFiles = "src/main/scala/org/bblfsh/client/libuast/org_bblfsh_client_libuast_Libuast.c " +
+    val sourceFiles = "src/main/scala/org/bblfsh/client/libuast/org_bblfsh_client_libuast_Libuast.cc " +
         "src/main/scala/org/bblfsh/client/libuast/jni_utils.c " +
         "src/main/scala/org/bblfsh/client/libuast/nodeiface.c " +
         "src/main/scala/org/bblfsh/client/libuast/objtrack.c " +
