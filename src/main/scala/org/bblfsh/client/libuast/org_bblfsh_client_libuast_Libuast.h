@@ -1,7 +1,10 @@
 /* Header for class org_bblfsh_client_libuast_Libuast */
-
 #ifndef _Included_org_bblfsh_client_libuast_Libuast
 #define _Included_org_bblfsh_client_libuast_Libuast
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include <jni.h>
 
@@ -26,4 +29,8 @@ JNIEXPORT void JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_
   (JNIEnv *, jobject, jobject);
 
 jint JNI_OnLoad(JavaVM *vm, void *reserved);
+
+#ifdef __cplusplus
+}
+#endif
 #endif
