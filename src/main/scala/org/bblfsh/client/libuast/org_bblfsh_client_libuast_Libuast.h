@@ -5,9 +5,6 @@
 
 #include <jni.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 /*
  * Class:   org_bblfsh_client_libuast_Libuast
  * Method:  filter
@@ -29,7 +26,4 @@ JNIEXPORT void JNICALL Java_org_bblfsh_client_libuast_Libuast_00024UastIterator_
   (JNIEnv *, jobject, jobject);
 
 jint JNI_OnLoad(JavaVM *vm, void *reserved);
-#ifdef __cplusplus
-}
-#endif
 #endif
